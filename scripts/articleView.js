@@ -64,12 +64,39 @@ articleView.setTeasers = function() {
 
 articleView.initNewArticlePage = function() {
   // TODO: Ensure the main .tab-content area is revealed. We might add more tabs later.
+  $('.tab-content').hide();
+  $('#write').fadeIn('slow');
 
   // TODO: The new articles we create will be copy/pasted into our source data file.
   // Set up this "export" functionality. We can hide it for now, and show it once we
   // have data to export. Also, let's add focus event to help us select the JSON.
+  $('#article-export').hide(); // Hides the JSON field upon page init.
+  $('#article-export').on('click',function(){ // After the JSON gets populated, it will be clickable.
+    $('article-json').select(); // When clicked, the content is automagically selected and ready for copying.
+  });
 
   // TODO: Add an event handler to update the preview and the export field if any inputs change.
+  $('input, textarea').on('input', render);
+
+  var inputForm = $('#new-form'); // Input area
+  var formValues = {}; // Empty object, filled in during input updates
+
+  var rawTemplate = $('#article-template').html();
+  var completedFunc = Handlebars.compile(rawTemplate);
+
+  function render() {
+    formValues['title'] = $('#article-title').val();
+    formValues['body'] = $('#article-body').val();
+    formValues['author'] = $('#article-author').val();
+    formValues['authorUrl'] = $('#article-author-url').val();
+    formValues['categorySlug'] = $('#article-category').val();
+    formValues['publishStatus'] = $('#article-published').val();
+
+    formValues['body'] = marked(formValues['body']); // Convert markup to html
+
+    var readyHtml = completedFunc(formValues);
+    $('#articles').html(readyHtml);
+  }
 };
 
 articleView.create = function() {
@@ -84,7 +111,6 @@ articleView.create = function() {
 
   // TODO: Export the new article as JSON, so it's ready to copy/paste into blogArticles.js:
 };
-
 
 articleView.initIndexPage = function() {
   articleView.populateFilters();

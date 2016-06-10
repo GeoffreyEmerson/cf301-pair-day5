@@ -12,16 +12,10 @@
     <link rel="stylesheet" href="vendor/styles/railscasts.css">
 
     <script id="article-template" type="text/x-handlebars-template">
-      <article
-        class="clearfix"
-        data-author="{{authorSlug}}"
-        data-category="{{categorySlug}}">
+      <article class="clearfix" data-author="{{author}}" data-category="{{categorySlug}}">
         <header>
           <h1>{{title}}</h1>
-          <div class="byline">
-            By <address><a href="{{authorUrl}}">{{author}}</a></address>
-            {{publishStatus}}
-          </div>
+          <div class="byline">By <address><a href="{{authorUrl}}">{{author}}</a></address>{{publishStatus}}</div>
         </header>
         <section class="article-body">{{{body}}}</section>
         <a href="#" class="read-on">Read on &rarr;</a>
@@ -45,6 +39,8 @@
       </nav>
     </header>
     <main class="clearfix">
+
+      <!-- The form view is in '#write'  -->
       <section id="write" class="tab-content">
         <h1>New Article</h1>
         <!-- DONE: Set up a form to accept user input for a new blog article: -->
@@ -67,6 +63,8 @@
           </label>
         </form>
       </section>
+
+      <!-- Rendered 'preview' goes in '#articles' -->
       <section id="articles" class="tab-content">
 
       </section>
@@ -82,7 +80,7 @@
     </footer>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.4/handlebars.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
     <!-- DONE: Include script tags for 3rd party libraries to enable markdown rendering and code syntax highlighting -->
     <script src="/vendor/scripts/marked.js"></script>
     <script src="/vendor/scripts/highlight.pack.js"></script>
