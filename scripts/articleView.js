@@ -66,13 +66,16 @@ articleView.initNewArticlePage = function() {
   // DONE: Ensure the main .tab-content area is revealed. We might add more tabs later.
   $('.tab-content').hide();
   $('#write').fadeIn('slow');
-
+  $('.tab').on('click', function() {
+    $('.tab-content').hide();
+    $($(this).data('content')).fadeIn('slow');
+  });
   // DONE: The new articles we create will be copy/pasted into our source data file.
   // Set up this "export" functionality. We can hide it for now, and show it once we
   // have data to export. Also, let's add focus event to help us select the JSON.
   $('#article-export').hide(); // Hides the JSON field upon page init.
   $('#article-export').on('click',function(){ // After the JSON gets populated, it will be clickable.
-    $('article-json').select(); // When clicked, the content is automagically selected and ready for copying.
+    $('#article-json').select(); // When clicked, the content is automagically selected and ready for copying.
   });
 
   // DONE: Add an event handler to update the preview and the export field if any inputs change.
@@ -98,7 +101,7 @@ articleView.create = function() {
   formValues['author'] = $('#article-author').val();
   formValues['authorUrl'] = $('#article-author-url').val();
   formValues['categorySlug'] = $('#article-category').val();
-  formValues['publishStatus'] = $('#article-published').val();
+  formValues['publishStatus'] = $('#article-published').prop('checked');
 
   formValues['body'] = marked(formValues['body']); // Convert markup to html
 
@@ -110,7 +113,9 @@ articleView.create = function() {
   $('.article-body').find('pre code').each(function(i, block) {
     hljs.highlightBlock(block);
   });
-  // TODO: Export the new article as JSON, so it's ready to copy/paste into blogArticles.js:
+  // DONE: Export the new article as JSON, so it's ready to copy/paste into blogArticles.js:
+  $('#article-json').val(JSON.stringify(formValues));
+  $('#article-export').fadeIn();
 };
 
 articleView.initIndexPage = function() {
