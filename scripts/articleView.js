@@ -63,11 +63,11 @@ articleView.setTeasers = function() {
 };
 
 articleView.initNewArticlePage = function() {
-  // TODO: Ensure the main .tab-content area is revealed. We might add more tabs later.
+  // DONE: Ensure the main .tab-content area is revealed. We might add more tabs later.
   $('.tab-content').hide();
   $('#write').fadeIn('slow');
 
-  // TODO: The new articles we create will be copy/pasted into our source data file.
+  // DONE: The new articles we create will be copy/pasted into our source data file.
   // Set up this "export" functionality. We can hide it for now, and show it once we
   // have data to export. Also, let's add focus event to help us select the JSON.
   $('#article-export').hide(); // Hides the JSON field upon page init.
@@ -75,40 +75,41 @@ articleView.initNewArticlePage = function() {
     $('article-json').select(); // When clicked, the content is automagically selected and ready for copying.
   });
 
-  // TODO: Add an event handler to update the preview and the export field if any inputs change.
-  $('input, textarea').on('input', render);
+  // DONE: Add an event handler to update the preview and the export field if any inputs change.
+  $('input, textarea').on('input', this.create);
 
   var inputForm = $('#new-form'); // Input area
-  var formValues = {}; // Empty object, filled in during input updates
 
   var rawTemplate = $('#article-template').html();
-  var completedFunc = Handlebars.compile(rawTemplate);
-
-  function render() {
-    formValues['title'] = $('#article-title').val();
-    formValues['body'] = $('#article-body').val();
-    formValues['author'] = $('#article-author').val();
-    formValues['authorUrl'] = $('#article-author-url').val();
-    formValues['categorySlug'] = $('#article-category').val();
-    formValues['publishStatus'] = $('#article-published').val();
-
-    formValues['body'] = marked(formValues['body']); // Convert markup to html
-
-    var readyHtml = completedFunc(formValues);
-    $('#articles').html(readyHtml);
-  }
+  articleView.completedFunc = Handlebars.compile(rawTemplate);
 };
 
 articleView.create = function() {
-  // TODO: Set up a var to hold the new article we are creating.
+  // DONE: Set up a var to hold the new article we are creating.
   // Clear out the #articles element, so we can put in the updated preview
+  var readyHtml;
+  $('#articles').html('');
+  // DONE: Instantiate an article based on what's in the form fields:
 
-  // TODO: Instantiate an article based on what's in the form fields:
+  var formValues = {}; // Empty object, filled in during input updates
 
-  // TODO: Use our interface to the Handblebars template to put this new article into the DOM:
+  formValues['title'] = $('#article-title').val();
+  formValues['body'] = $('#article-body').val();
+  formValues['author'] = $('#article-author').val();
+  formValues['authorUrl'] = $('#article-author-url').val();
+  formValues['categorySlug'] = $('#article-category').val();
+  formValues['publishStatus'] = $('#article-published').val();
 
-  // TODO: Activate the highlighting of any code blocks:
+  formValues['body'] = marked(formValues['body']); // Convert markup to html
 
+  // DONE: Use our interface to the Handblebars template to put this new article into the DOM:
+  var readyHtml = articleView.completedFunc(formValues);
+  $('#articles').html(readyHtml);
+
+  // DONE: Activate the highlighting of any code blocks:
+  $('.article-body').find('pre code').each(function(i, block) {
+    hljs.highlightBlock(block);
+  });
   // TODO: Export the new article as JSON, so it's ready to copy/paste into blogArticles.js:
 };
 
