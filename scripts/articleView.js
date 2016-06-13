@@ -80,6 +80,7 @@ articleView.initNewArticlePage = function() {
 
   // DONE: Add an event handler to update the preview and the export field if any inputs change.
   $('input, textarea').on('input', this.create);
+  $('#article-published').change(this.create);
 
   var inputForm = $('#new-form'); // Input area
 
@@ -101,7 +102,11 @@ articleView.create = function() {
   formValues['author'] = $('#article-author').val();
   formValues['authorUrl'] = $('#article-author-url').val();
   formValues['categorySlug'] = $('#article-category').val();
-  formValues['publishStatus'] = $('#article-published').prop('checked');
+  if ($('#article-published').is(':checked')) {
+    formValues['publishStatus'] = 'Published!';
+  } else {
+    formValues['publishStatus'] = 'Draft';
+  }
 
   formValues['body'] = marked(formValues['body']); // Convert markup to html
 
